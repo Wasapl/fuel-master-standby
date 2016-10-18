@@ -6,7 +6,7 @@ source $ROOT/config.sh
 #TODO check octane installed
 type octane >/dev/null 2>&1
 if [ $? -eq 1 ]; then
-	echo 'There is no fuel-octane. Run yum install fuel-octane first.'
+	echo 'There is no fuel-octane. Run "yum install fuel-octane" first.'
 	exit 1
 fi
 
@@ -24,8 +24,8 @@ fi
 
 # do octane backup
 echo 'No tasks running in Nailgun.\nRun backup.'
-octane fuel-backup --to $BACKUP_DIR/fuel-backup.8.0.tar.gz
-octane fuel-repo-backup --full --to $BACKUP_DIR/fuel-repo-backup.8.0.tar.gz
+octane fuel-backup --to $BACKUP_DIR/$STATE_FILE
+octane fuel-repo-backup --full --to $BACKUP_DIR/$REPO_FILE
 
 #TODO private keys
 scp $BACKUP_DIR/fuel-backup.8.0.tar.gz $STANDBY_IP:/$STANDBY_DIR/$DATE/
