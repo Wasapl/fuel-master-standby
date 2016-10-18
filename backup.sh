@@ -1,13 +1,14 @@
 #!/bin/bash -x
 
-BACKUP_DIR=/var/log/backup
-STANDBY_IP=172.16.0.2
-STANDBY_DIR=/var/log/backup
-
-DATE=`date +%F`
-
+ROOT=$(dirname `readlink -f $0`)
+source $ROOT/config.sh
 
 #TODO check octane installed
+type octane >/dev/null 2>&1
+if [ $? -eq 1 ]; then
+	echo 'There is no fuel-octane. Run yum install fuel-octane first.'
+	exit 1
+fi
 
 if [ -d $BACKUP_DIR ]; then
 	# should check content of BACKUP_DIR prior to run next command 
@@ -27,5 +28,5 @@ octane fuel-backup --to $BACKUP_DIR/fuel-backup.8.0.tar.gz
 octane fuel-repo-backup --full --to $BACKUP_DIR/fuel-repo-backup.8.0.tar.gz
 
 #TODO private keys
-scp $BACKUP_DIR/fuel-backup.8.0.tar.gz $STANDBY_IP:/backup/$DATE/
-scp $BACKUP_DIR/fuel-repo-backup.8.0.tar.gz $STANDBY_IP:/backup/$DATE/
+scp $BACKUP_DIR/fuel-backup.8.0.tar.gz $STANDBY_IP:/$STANDBY_DIR/$DATE/
+scp $BACKUP_DIR/fuel-repo-backup.8.0.tar.gz $STANDBY_IP:$STANDBY_DIR/$DATE/
