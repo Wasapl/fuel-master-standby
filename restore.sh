@@ -7,6 +7,8 @@ DIR_BACKUP=/var/log/backup
 
 #check latest backup exist
 
+#change astute.yaml in tarball
+
 #restore backup
 
 #delete backup files
