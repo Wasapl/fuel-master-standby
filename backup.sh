@@ -6,13 +6,13 @@ source $ROOT/config.sh
 #TODO check octane installed
 type octane >/dev/null 2>&1
 if [ $? -eq 1 ]; then
-	echo 'There is no fuel-octane. Run "yum install fuel-octane" first.'
-	exit 1
+    echo 'There is no fuel-octane. Run "yum install fuel-octane" first.'
+    exit 1
 fi
 
 if [ -d $BACKUP_DIR ]; then
-	# should check content of BACKUP_DIR prior to run next command 
-	rm -rf $BACKUP_DIR
+    # should check content of BACKUP_DIR prior to run next command 
+    rm -rf $BACKUP_DIR
 fi
 
 mkdir -p $BACKUP_DIR
@@ -23,10 +23,10 @@ if not $(fuel task|awk -F'|' 'NR>2&&($2~/pending/||$2~/running/){exit 1}'); then
 fi
 
 # do octane backup
-echo 'No tasks running in Nailgun.\nRun backup.'
 octane fuel-backup --to $BACKUP_DIR/$STATE_FILE
 octane fuel-repo-backup --full --to $BACKUP_DIR/$REPO_FILE
 
-#TODO private keys
-scp $BACKUP_DIR/fuel-backup.8.0.tar.gz $STANDBY_IP:/$STANDBY_DIR/$DATE/
-scp $BACKUP_DIR/fuel-repo-backup.8.0.tar.gz $STANDBY_IP:$STANDBY_DIR/$DATE/
+
+ssh $STANDBY_IP "mkdir -p /$STANDBY_DIR/$DATE/"
+scp $BACKUP_DIR/$STATE_FILE $STANDBY_IP:/$STANDBY_DIR/$DATE/
+scp $BACKUP_DIR/$REPO_FILE $STANDBY_IP:$STANDBY_DIR/$DATE/
