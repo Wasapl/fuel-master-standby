@@ -46,7 +46,7 @@ fi
 
 
 #restore backup
-#octane fuel-restore --from $STANDBY_DIR/$LAST_DIR/$STATE_FILE --admin-password <>
-#octane fuel-repo-restore --from $STANDBY_DIR/$LAST_DIR/$REPO_FILE
+octane fuel-restore --from $STANDBY_DIR/$LAST_DIR/$STATE_FILE --admin-password <>
+octane fuel-repo-restore --from $STANDBY_DIR/$LAST_DIR/$REPO_FILE
 
 #delete backup files (optionaly)
